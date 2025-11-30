@@ -1,9 +1,8 @@
-import random
 import math
 
 # Konstanta
-INV_SQRT2 = 0.70710678
 INV_PI = 0.31830989
+INV_SQRT_2 = 0.70710678
 
 def erf(x):
     # Referensi: https://en.wikipedia.org/wiki/Error_function#Approximation_with_elementary_functions
@@ -25,11 +24,11 @@ def erf(x):
     return sign * result
 
 def phi(x):
-    result = 0.5 * (1.0 + erf(x * INV_SQRT2))
+    result = 0.5 * (1.0 + erf(x * INV_SQRT_2))
     return result
 
 def owens_t(h, a, n):
-    # Karena ada integralnya, pakai estimasi dengan jumlah Riemann
+    # Integralnya dihitung dengan jumlah Riemann
     dt = a / n
     area = 0.0
     for i in range(n):
@@ -43,7 +42,13 @@ def skew_norm_cdf(x, xi, omega, alpha):
     result = phi(z) - 2 * owens_t(z, alpha, 1000)
     return result
 
-def compute_xi(mean, omega=0.2, alpha=5):
+def truncated_skew_norm_cdf(x, xi, omega, alpha, min=0.0, max=4.0):
+    cdf_min = skew_norm_cdf(min, xi, omega, alpha)
+    cdf_max = skew_norm_cdf(max, xi, omega, alpha)
+    cdf_x  = skew_norm_cdf(x,  xi, omega, alpha)
+    return (cdf_x - cdf_min) / (cdf_max - cdf_min)
+
+def compute_xi(mean, omega, alpha):
     delta = alpha / math.sqrt(1 + alpha*alpha)
     shift = omega * delta * math.sqrt(2 * INV_PI)
     return mean - shift
@@ -52,12 +57,13 @@ def main():
     ipk = float(input("Masukkan indeks prestasi kumulatif (IPK) Anda: "))
     print(f"{ipk}")
 
-    # Daftar Peringkat IPK
-    # indeks = [random.uniform(2, 4) for _ in range(281)] # untuk sementara membuka daftar indeks pakai algoritma ini
-    mean = 3.5
-    standard_deviation = 0.20
-    probabilitas = skew_norm_cdf(ipk, compute_xi(mean), standard_deviation, alpha = 4)
-    print(probabilitas)
+    mean = 3.84
+    alpha = -0.8
+    omega = 0.2
+    xi = compute_xi(mean, omega, alpha)
+
+    probabilitas = truncated_skew_norm_cdf(ipk, xi, omega, alpha)
+    print(round(probabilitas, 4))
 
 if __name__ == "__main__":
     main()
