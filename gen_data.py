@@ -44,7 +44,7 @@ def owens_t(h, a, n):
     for i in range(n):
         t = (i + 0.5) * dt
         oprt = (1 + t*t)
-        area += (math.exp(-0.5 * h*h * oprt)) / (1 + oprt)
+        area += (math.exp(-0.5 * h*h * oprt)) / (oprt)
     return area * dt * 0.5 * INV_PI
 
 def skew_norm_pdf(x, xi, omega, alpha):

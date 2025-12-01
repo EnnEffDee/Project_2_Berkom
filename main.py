@@ -1,4 +1,5 @@
 import math
+import csv
 
 # Konstanta
 INV_PI = 0.31830989
@@ -34,7 +35,7 @@ def owens_t(h, a, n):
     for i in range(n):
         t = (i + 0.5) * dt
         oprt = (1 + t*t)
-        area += (math.exp(-0.5 * h*h * oprt)) / (1 + oprt)
+        area += (math.exp(-0.5 * h*h * oprt)) / (oprt)
     return area * dt * 0.5 * INV_PI
 
 def skew_norm_cdf(x, xi, omega, alpha):
@@ -54,16 +55,100 @@ def compute_xi(mean, omega, alpha):
     return mean - shift
 
 def main():
-    ipk = float(input("Masukkan indeks prestasi kumulatif (IPK) Anda: "))
-    print(f"{ipk}")
-
-    mean = 3.84
+    nama_jurusan = ["Informatika Ganesha", "Informatika Jatinangor", "Sistem dan Teknologi Informasi Ganesha", "Sistem dan Teknologi Informasi Jatinangor"]
+    mean_if_g = 3.84
+    mean_if_j = 3.68
+    mean_sti_g = 3.71
+    mean_sti_j = 3.61
+    data_ipk_total = [0.0 for i in range(285)]
+    data_ipk_if_g = [0.0 for i in range(72)]
+    data_ipk_if_j = [0.0 for i in range(71)]
+    data_ipk_sti_g = [0.0 for i in range(71)]
+    data_ipk_sti_j = [0.0 for i in range(71)]
     alpha = -0.8
     omega = 0.2
-    xi = compute_xi(mean, omega, alpha)
 
-    probabilitas = truncated_skew_norm_cdf(ipk, xi, omega, alpha)
-    print(round(probabilitas, 4))
+    ipk = float(input("Masukkan indeks prestasi kumulatif (IPK) Anda: "))
+
+    pilihan = int(input("Apa yang ingin Anda lakukan?\n1. Menampilkan nilai indeks angkatan\n2. Menghitung peluang memasuki jurusan\n3. Keluar"))
+    if pilihan == 1:
+        k = 0
+        with open("data_ipk_total.csv") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                data_ipk_total[k] = row
+                k += 1
+
+        k = 0
+        with open("data_ipk_if_g.csv") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                data_ipk_if_g[k] = row
+                k += 1
+
+        k = 0
+        with open("data_ipk_if_j.csv") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                data_ipk_if_j[k] = row
+                k += 1
+
+        k = 0
+        with open("data_ipk_sti_g.csv") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                data_ipk_sti_g[k] = row
+                k += 1
+
+        k = 0
+        with open("data_ipk_sti_j.csv") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                data_ipk_sti_j[k] = row
+                k += 1
+
+        print("============\nRanking data\n============")
+        print("Peingkat IPK Seangkatan")
+        for i in range(285):
+            print(f"Peringkat #{i}: {data_ipk_total[i]}")
+        print("Peingkat IPK Informatika Ganesha")
+        for i in range(72):
+            print(f"Peringkat #{i}: {data_ipk_if_g[i]}")
+        print("Peingkat IPK Informatika Jatinangor")
+        for i in range(71):
+            print(f"Peringkat #{i}: {data_ipk_if_j[i]}")
+        print("Peingkat IPK Sistem dan Teknologi Informasi Ganesha")
+        for i in range(71):
+            print(f"Peringkat #{i}: {data_ipk_sti_g[i]}")
+        print("Peingkat IPK Sistem dan Teknologi Informasi Jatinangor")
+        for i in range(71):
+            print(f"Peringkat #{i}: {data_ipk_sti_j[i]}")
+
+    elif pilihan == 2:
+        print("\nJurusan:\n1. Informatika Ganesha\n2.Informatika Jatinangor\n3. Sistem dan Teknologi Informasi Ganesha\n4. Sistem dan Teknologi Informasi Jatinangor")
+        pilihan = [0 for i in range(4)]
+        for i in range(4):
+            pilihan[i] = int(input(f"Pilihan {i + 1}: "))
+
+        xi_if_g = compute_xi(mean_if_g, omega, alpha)
+        xi_if_j = compute_xi(mean_if_j, omega, alpha)
+        xi_sti_g = compute_xi(mean_sti_g, omega, alpha)
+        xi_sti_j = compute_xi(mean_sti_j, omega, alpha)
+
+        probabilitas = [0 for i in range(4)]
+        for i in range(4):
+            if pilihan[i] == 1:
+                probabilitas[i] = truncated_skew_norm_cdf(ipk, xi_if_g, omega, alpha)
+            if pilihan[i] == 2:
+                probabilitas[i] = truncated_skew_norm_cdf(ipk, xi_if_j, omega, alpha)
+            if pilihan[i] == 3:
+                probabilitas[i] = truncated_skew_norm_cdf(ipk, xi_sti_g, omega, alpha)
+            if pilihan[i] == 4:
+                probabilitas[i] = truncated_skew_norm_cdf(ipk, xi_sti_j, omega, alpha)
+        
+        print("Jadi, probabilitasmu untuk memasuki masing-masing jurusan adalah ")
+        for i in range(4):
+            print(f"{i + 1}. Pilihan {i + 1} \"{nama_jurusan[pilihan[i] - 1]}\": {round(probabilitas[i], 4)}")
 
 if __name__ == "__main__":
     main()
