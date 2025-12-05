@@ -2,10 +2,6 @@ import math_functions
 import prog_utils
 import csv
 
-# Konstanta
-INV_PI = 0.31830989
-INV_SQRT_2 = 0.70710678
-
 def rank_index(array, val):
     rank = 0
     for ipk in array:
