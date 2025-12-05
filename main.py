@@ -7,9 +7,11 @@ INV_PI = 0.31830989
 INV_SQRT_2 = 0.70710678
 
 def rank_index(array, val):
-    for i in range(len(array) - 1):
-        if array[i] < val < array[i + 1]:
-            return i + 1
+    rank = 0
+    for ipk in array:
+        if ipk < val:
+            rank += 1
+    return rank 
 
 def open_file(data, file_name):
     k = 0
