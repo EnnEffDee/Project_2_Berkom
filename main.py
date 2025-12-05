@@ -13,19 +13,14 @@ def rank_index(array, val):
 
 def open_file(data, file_name):
     k = 0
-    with open(file_name) as f:
+    with open(file_name, 'r') as f:
         reader = csv.reader(f)
         for row in reader:
-            data[k] = float(row[0])
-            if k < len(data): 
-                try:
-                    data[k] = float(row[0]) 
-                    k += 1
-                except ValueError:
-                    print(f"Peringatan: Baris {k} bukan angka. Dilewati.")
-                    k += 1
-            else:
+            if k >= len(data):
                 break
+            data[k] = float(row[0])
+            k += 1
+    return data
 
 def main():
     mean_if_g = 3.84
