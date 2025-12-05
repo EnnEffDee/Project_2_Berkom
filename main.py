@@ -41,10 +41,7 @@ def main():
 
     nama_jurusan = ["Informatika Ganesha", "Informatika Jatinangor", "Sistem dan Teknologi Informasi Ganesha", "Sistem dan Teknologi Informasi Jatinangor"]
 
-    ipk = float(input("Masukkan indeks prestasi kumulatif (IPK) Anda: "))
-    if (prog_utils.validate_input(ipk, 0, 4) == False):
-        print("Terjadi kesalahan input, cobalah lagi")
-        return
+    ipk = prog_utils.retry_input_range("f", "Masukkan indeks prestasi kumulatif (IPK) Anda: ", 0, 4)
 
     k = 0
     while True:
