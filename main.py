@@ -28,11 +28,11 @@ def main():
     alpha = -0.8
     omega = 0.2
 
-    data_ipk_total = [0.0 for i in range(285)]
-    data_ipk_if_g = [0.0 for i in range(72)]
-    data_ipk_if_j = [0.0 for i in range(71)]
-    data_ipk_sti_g = [0.0 for i in range(71)]
-    data_ipk_sti_j = [0.0 for i in range(71)]
+    data_ipk_total = [0.0 for _ in range(285)]
+    data_ipk_if_g = [0.0 for _ in range(72)]
+    data_ipk_if_j = [0.0 for _ in range(71)]
+    data_ipk_sti_g = [0.0 for _ in range(71)]
+    data_ipk_sti_j = [0.0 for _ in range(71)]
 
     nama_jurusan = [
         "Informatika Ganesha",
@@ -90,7 +90,7 @@ def main():
             print("\n\n=== PILIH JURUSAN ===\n1. Informatika Ganesha\n2. Informatika Jatinangor\n3. Sistem dan Teknologi Informasi Ganesha\n4. Sistem dan Teknologi Informasi Jatinangor")
             print("========================")
 
-            pilihan_jurusan = [0 for i in range(4)]
+            pilihan_jurusan = [0 for _ in range(4)]
             for i in range(4):
                 pilihan_jurusan[i] = int(prog_utils.retry_input_range("i", f"Pilihan {i + 1}: ", 1, 4))
 
