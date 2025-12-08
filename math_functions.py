@@ -55,6 +55,7 @@ def truncated_skew_norm_cdf(x, xi, omega, alpha, min_val=0.0, max_val=4.0):
     
     return (cdf_x - cdf_min) / (cdf_max - cdf_min)
 
+# Tidak digunakan di program utama, hanya digunakan di program gen_file.py yang tidak termasuk hasil dari tubes ini
 def inv_truncated_skew_norm_pdf(p, xi, omega, alpha, min_val=0.0, max_val=4.0, tol=1e-6):
     cdf_min = skew_norm_cdf(min_val, xi, omega, alpha)
     cdf_max = skew_norm_cdf(max_val, xi, omega, alpha)

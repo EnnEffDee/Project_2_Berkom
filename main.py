@@ -3,11 +3,11 @@ import prog_utils
 import csv
 
 def rank_index(array, val):
-    sorted_arr = sorted(array, reverse=True)
-    for i, v in enumerate(sorted_arr):
-        if val >= v:
-            return i + 1
-    return len(sorted_arr)
+    rank = 1  # mulai dari 1
+    for ipk in array:
+        if ipk > val:
+            rank += 1
+    return rank 
 
 def open_file(file_name, n):
     data = [0.0 for _ in range(n)]
@@ -112,7 +112,7 @@ def main():
                 jurusan = nama_jurusan[pilihan_jurusan[i] - 1]
                 print(f"{i + 1}. Pilihan {i + 1} \"{jurusan}\": {100 * probs[i]:.2f}%")
 
-        elif pilihan == 3:
+        else:
             print("\n\n=== REKOMENDASI BERDASARKAN IPK GABUNGAN ===")
 
             xi_total = math_functions.compute_xi(mean_total, omega, alpha)

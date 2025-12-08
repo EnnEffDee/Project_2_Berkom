@@ -1,6 +1,7 @@
 import math_functions
 import csv
 
+# File ini tidak termasuk bagian dari hasil tubes karena di luar 
 def main():
     n = int(input("Masukkan jumlah data yang ingin digenerate: "))
     mean = float(input("Masukkan mean data yang ingin digenerate: "))
