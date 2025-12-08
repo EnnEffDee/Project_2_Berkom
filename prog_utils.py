@@ -5,6 +5,7 @@ def retry_input_range(type, msg, min, max):
         if type == "i":
             try:
                 nilai_int = int(ans)
+                min, max = int(min), int(max)
                 if (min <= nilai_int <= max):
                     return nilai_int
                 print(f"Input tidak berada di dalam batas {min} - {max}")
@@ -13,6 +14,7 @@ def retry_input_range(type, msg, min, max):
         elif type == "f":
             try:
                 nilai_float = float(ans)
+                min, max = float(min), float(max)
                 if (min <= nilai_float <= max):
                     return nilai_float
                 print(f"Input tidak berada di dalam batas {min} - {max}")
