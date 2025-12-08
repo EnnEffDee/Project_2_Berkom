@@ -2,33 +2,22 @@ import math_functions
 import prog_utils
 import csv
 
-# Rank: IPK tertinggi = rank 1
 def rank_index(array, val):
-    rank = 1  # mulai dari 1
-    for ipk in array:
-        if ipk > val:
-            rank += 1
-    return rank
+    sorted_arr = sorted(array, reverse=True)
+    for i, v in enumerate(sorted_arr):
+        if val >= v:
+            return i + 1
+    return len(sorted_arr)
 
-# Open file TANPA append/pop/split
-# Mengisi sisa elemen dengan angka besar agar tidak mengganggu ranking
-def open_file(data, file_name):
+def open_file(file_name, n):
+    data = [0.0 for _ in range(n)]
     k = 0
     with open(file_name, 'r') as f:
         reader = csv.reader(f)
         for row in reader:
-            if k >= len(data):
-                break
             data[k] = float(row[0])
             k += 1
-
-    # Sisa data diisi angka besar, supaya tidak dihitung sebagai IPK rendah
-    while k < len(data):
-        data[k] = 10.0
-        k += 1
-
     return data
-
 
 def main():
     mean_if_g = 3.84
@@ -39,7 +28,6 @@ def main():
     alpha = -0.8
     omega = 0.2
 
-    # Allocate fixed-size arrays
     data_ipk_total = [0.0 for i in range(285)]
     data_ipk_if_g = [0.0 for i in range(72)]
     data_ipk_if_j = [0.0 for i in range(71)]
@@ -53,143 +41,114 @@ def main():
         "Sistem dan Teknologi Informasi Jatinangor"
     ]
 
-    # Input IPK
-    ipk = prog_utils.retry_input_range("f", "Masukkan indeks prestasi kumulatif (IPK) Anda: ", 0, 4)
+    ipk = float(prog_utils.retry_input_range("f", "Masukkan indeks prestasi kumulatif (IPK) Anda: ", 0, 4))
 
     while True:
-        print("\nApa yang ingin Anda lakukan?\n"
-              "1. Menampilkan nilai indeks angkatan\n"
-              "2. Menghitung peluang memasuki jurusan\n"
-              "3. Memberikan rekomendasi\n"
-              "4. Keluar")
-
+        print("\n\n\n====================================")
+        print("Apa yang ingin Anda lakukan?\n1. Menampilkan nilai indeks angkatan\n2. Menghitung peluang memasuki jurusan\n3. Memberikan rekomendasi\n4. Keluar")
+        print("====================================")
         pilihan = prog_utils.retry_input_range("i", "Pilihan: ", 1, 4)
 
         if pilihan == 4:
             print("Terima kasih!")
             return 0
 
-        # ============================
-        # 1. Tampilkan nilai indeks
-        # ============================
-        if pilihan == 1:
-            print("\n=== PILIH DATASET ===\n"
-                  "1. Informatika Ganesha\n"
-                  "2. Informatika Jatinangor\n"
-                  "3. Sistem dan Teknologi Informasi Ganesha\n"
-                  "4. Sistem dan Teknologi Informasi Jatinangor\n"
-                  "5. Total Gabungan")
-            
+        elif pilihan == 1:
+            print("\n\n=== PILIH DATASET ===\n1. Informatika Ganesha\n2. Informatika Jatinangor\n3. Sistem dan Teknologi Informasi Ganesha\n4. Sistem dan Teknologi Informasi Jatinangor\n5. Total Gabungan")
+            print("========================")
             dataset = prog_utils.retry_input_range("i", "Pilihan: ", 1, 5)
 
-            print("========================")
+            print("------------------------")
+
             if dataset == 1:
-                data_ipk_if_g = open_file(data_ipk_if_g, "data_ipk_if_g.csv")
+                data_ipk_if_g = open_file("data_ipk_if_g.csv", 72)
                 rank = rank_index(data_ipk_if_g, ipk)
-
-                print(f"Rata-rata indeks: {mean_if_g}")
-                print(f"Peringkatmu: {rank}")
-                print("========================")
-
+                print(f"\nRata-rata indeks: {mean_if_g}\nPeringkatmu: {rank} dari {len(data_ipk_if_g)}")
+                print("------------------------")
             elif dataset == 2:
-                data_ipk_if_j = open_file(data_ipk_if_j, "data_ipk_if_j.csv")
+                data_ipk_if_j = open_file("data_ipk_if_j.csv", 71)
                 rank = rank_index(data_ipk_if_j, ipk)
-
-                print(f"Rata-rata indeks: {mean_if_j}")
-                print(f"Peringkatmu: {rank}")
-                print("========================")
-
+                print(f"\nRata-rata indeks: {mean_if_j}\nPeringkatmu: {rank} dari {len(data_ipk_if_j)}")
+                print("------------------------")
             elif dataset == 3:
-                data_ipk_sti_g = open_file(data_ipk_sti_g, "data_ipk_sti_g.csv")
+                data_ipk_sti_g = open_file("data_ipk_sti_g.csv", 71)
                 rank = rank_index(data_ipk_sti_g, ipk)
-
-                print(f"Rata-rata indeks: {mean_sti_g}")
-                print(f"Peringkatmu: {rank}")
-                print("========================")
-
+                print(f"\nRata-rata indeks: {mean_sti_g}\nPeringkatmu: {rank} dari {len(data_ipk_sti_g)}")
+                print("------------------------")
             elif dataset == 4:
-                data_ipk_sti_j = open_file(data_ipk_sti_j, "data_ipk_sti_j.csv")
+                data_ipk_sti_j = open_file("data_ipk_sti_j.csv", 71)
                 rank = rank_index(data_ipk_sti_j, ipk)
-
-                print(f"Rata-rata indeks: {mean_sti_j}")
-                print(f"Peringkatmu: {rank}")
-                print("========================")
-
+                print(f"\nRata-rata indeks: {mean_sti_j}\nPeringkatmu: {rank} dari {len(data_ipk_sti_j)}")
+                print("------------------------")
             else:
-                data_ipk_total = open_file(data_ipk_total, "data_ipk_total.csv")
+                data_ipk_total = open_file("data_ipk_total.csv", 285)
                 rank = rank_index(data_ipk_total, ipk)
+                print(f"\nRata-rata indeks: {mean_total}\nPeringkatmu: {rank} dari {len(data_ipk_total)}")
+                print("------------------------")
 
-                print(f"Rata-rata indeks: {mean_total}")
-                print(f"Peringkatmu: {rank}")
-                print("========================")
-
-        # ============================
-        # 2. Hitung peluang jurusan
-        # ============================
         elif pilihan == 2:
-            print("\n=== PILIH JURUSAN ===\n"
-                  "1. Informatika Ganesha\n"
-                  "2. Informatika Jatinangor\n"
-                  "3. Sistem dan Teknologi Informasi Ganesha\n"
-                  "4. Sistem dan Teknologi Informasi Jatinangor")
+            print("\n\n=== PILIH JURUSAN ===\n1. Informatika Ganesha\n2. Informatika Jatinangor\n3. Sistem dan Teknologi Informasi Ganesha\n4. Sistem dan Teknologi Informasi Jatinangor")
+            print("========================")
 
             pilihan_jurusan = [0 for i in range(4)]
             for i in range(4):
-                pilihan_jurusan[i] = prog_utils.retry_input_range("i", f"Pilihan {i+1}: ", 1, 4)
+                pilihan_jurusan[i] = int(prog_utils.retry_input_range("i", f"Pilihan {i + 1}: ", 1, 4))
 
             xi_if_g = math_functions.compute_xi(mean_if_g, omega, alpha)
             xi_if_j = math_functions.compute_xi(mean_if_j, omega, alpha)
             xi_sti_g = math_functions.compute_xi(mean_sti_g, omega, alpha)
             xi_sti_j = math_functions.compute_xi(mean_sti_j, omega, alpha)
 
-            probabilitas = [0 for i in range(4)]
-            probabilitas[0] = math_functions.truncated_skew_norm_cdf(ipk, xi_if_g, omega, alpha)
-            probabilitas[1] = math_functions.truncated_skew_norm_cdf(ipk, xi_if_j, omega, alpha)
-            probabilitas[2] = math_functions.truncated_skew_norm_cdf(ipk, xi_sti_g, omega, alpha)
-            probabilitas[3] = math_functions.truncated_skew_norm_cdf(ipk, xi_sti_j, omega, alpha)
+            probs = [
+                math_functions.truncated_skew_norm_cdf(ipk, xi_if_g, omega, alpha),
+                math_functions.truncated_skew_norm_cdf(ipk, xi_if_j, omega, alpha),
+                math_functions.truncated_skew_norm_cdf(ipk, xi_sti_g, omega, alpha),
+                math_functions.truncated_skew_norm_cdf(ipk, xi_sti_j, omega, alpha),
+            ]
 
-            print("\nJadi, probabilitasmu untuk memasuki masing-masing jurusan adalah:")
+            print("------------------------")
+            print("Jadi, probabilitasmu untuk memasuki masing-masing jurusan adalah ")
             for i in range(4):
-                print(f"{i+1}. Pilihan {i+1} \"{nama_jurusan[pilihan_jurusan[i]-1]}\": {(100 * probabilitas[i]):.2f}%")
+                jurusan = nama_jurusan[pilihan_jurusan[i] - 1]
+                print(f"{i + 1}. Pilihan {i + 1} \"{jurusan}\": {100 * probs[i]:.2f}%")
 
-        # ============================
-        # 3. Rekomendasi
-        # ============================
         elif pilihan == 3:
-            print("\n=== REKOMENDASI BERDASARKAN IPK GABUNGAN ===")
+            print("\n\n=== REKOMENDASI BERDASARKAN IPK GABUNGAN ===")
 
             xi_total = math_functions.compute_xi(mean_total, omega, alpha)
             P_eval = math_functions.truncated_skew_norm_cdf(ipk, xi_total, omega, alpha)
 
+            print("========================")
             print(f"IPK Anda: {ipk} (Rata-rata Kelompok: {mean_total})")
             print(f"Indeks Kuantil (Peluang Kumulatif): {(100 * P_eval):.2f}%")
+            print("========================")
 
-            print("\nPoin Rekomendasi:")
+            print("\n- Poin Rekomendasi -")
             if P_eval >= 0.85:
                 print("Kategori: Prestasi Sangat Tinggi.")
-                print("1. Ambil program pertukaran atau double degree.")
-                print("2. Mulai proyek riset dan targetkan publikasi.")
-                print("3. Ambil posisi kepemimpinan profesional.")
-
+                print("1. Coba Tantangan Internasional.")
+                print("2. Riset & Publikasi.")
+                print("3. Kepemimpinan Profesional.")
             elif P_eval >= 0.30:
-                print("Kategori: Prestasi Baik.")
-                print("1. Ambil sertifikasi industri.")
-                print("2. Cari kesempatan magang.")
-                print("3. Perluas jaringan profesional (seminar/workshop).")
-
+                print("Kategori: Prestasi Baik. Konsisten dan berkembang.")
+                print("1. Ambil Sertifikasi.")
+                print("2. Magang.")
+                print("3. Networking.")
             else:
-                print("Kategori: Perlu Peningkatan.")
-                print("1. Fokus pada mata kuliah fundamental.")
-                print("2. Perbaiki manajemen waktu.")
-                print("3. Targetkan kenaikan IPK 0.1–0.2.")
+                print("Kategori: Perlu Fokus Peningkatan Akademik.")
+                print("1. Fokus Mata Kuliah Dasar.")
+                print("2. Manajemen Waktu.")
+                print("3. Perbaiki Nilai.")
 
+            print("------------------------")
+            print("\nTambahan:")
             if ipk > mean_total:
-                print(f"\nAnda berada di atas rata-rata ({mean_total}). Terus pertahankan!")
+                print(f"Anda berada di atas rata-rata ({mean_total}). Terus pertahankan!")
             elif ipk == mean_total:
-                print(f"\nIPK Anda sama dengan rata-rata angkatan.")
+                print("IPK Anda berada sama dengan di rata-rata angkatan.")
             else:
-                print(f"\nAnda berada di bawah rata-rata ({mean_total}). Fokus di mata kuliah berbobot tinggi.")
-
+                print(f"IPK Anda di bawah rata-rata ({mean_total}). Fokus di mata kuliah berbobot tinggi seperti matematika, fisika, dan kimia.")
+            print("------------------------")
 
 if __name__ == "__main__":
     main()

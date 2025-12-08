@@ -1,9 +1,6 @@
 def retry_input_range(type, msg, min, max):
     while True:
-        ans = input(msg)
-
-        # --- FIX: otomatis ubah koma menjadi titik ---
-        ans = ans.replace(",", ".")
+        ans = input(msg).replace(",", ".")
 
         if type == "i":
             try:
@@ -13,7 +10,6 @@ def retry_input_range(type, msg, min, max):
                 print(f"Input tidak berada di dalam batas {min} - {max}")
             except ValueError:
                 print("Input tidak valid. Harap masukkan bilangan bulat (integer).")
-
         elif type == "f":
             try:
                 nilai_float = float(ans)
@@ -22,7 +18,6 @@ def retry_input_range(type, msg, min, max):
                 print(f"Input tidak berada di dalam batas {min} - {max}")
             except ValueError:
                 print("Input tidak valid. Harap masukkan bilangan desimal (float).")
-
         else:
             print(f"Peringatan: Tipe '{type}' tidak dikenali. Mengembalikan input mentah.")
             return ans
