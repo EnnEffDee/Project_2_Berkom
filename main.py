@@ -145,7 +145,7 @@ def main():
             if ipk > mean_total:
                 print(f"Anda berada di atas rata-rata ({mean_total}). Terus pertahankan!")
             elif ipk == mean_total:
-                print("IPK Anda berada sama dengan di rata-rata angkatan.")
+                print(f"IPK Anda berada sama dengan di rata-rata angkatan ({mean_total}).")
             else:
                 print(f"IPK Anda di bawah rata-rata ({mean_total}). Fokus di mata kuliah berbobot tinggi seperti matematika, fisika, dan kimia.")
             print("------------------------")
