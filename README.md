@@ -9,3 +9,5 @@
 Program ini menganalisis peluang untuk memasuki masing-masing jurusan dari dengan input nilai IPK mahasiswa. Analisis ini didukung dengan beberapa fitur:
 - Ranking indeks
 - Rekomendasi metode belajar
+
+Jalankan program main.py 
